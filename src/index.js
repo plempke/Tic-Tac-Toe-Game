@@ -2,41 +2,54 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css'
 
-class Square extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      value: null,
-    };
-  }
-/*
-Initializes our state for our react component
-*/
-
-  render() {
-    return (
-      <button
-        className="sqaure"
-        onClick={() => this.setState({value: 'X'})}
-      >
-        {this.state.value}
-      </button>
-    );
-  }
+function Square(props) {
+  return (
+    <button className="sqaure" onClick={props.onClick}>
+      {props.value}
+    </button>
+  );
 }
 /*
-Square Component renders a single button used for selecting our squares
-It then takes the state from the squares render method and places the corresponding
-state in the designated box
+Wrote Square as a functional component that passes the variable 'props' as an input
+that's going to be rendered; rather than having a square class that uses Just
+a render method.
 */
 
 class Board extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      squares: Array(9).fill(null),
+      xIsNext: true,
+    };
+  }
+
+  handleClick(i) {
+    const sqaures = this.state.squares.slice();
+    sqaures[i] = this.state.xIsNext ? 'X' : 'O';
+    this.setState({
+      sqaures: sqaures,
+      xIsNext: !this.state.xIsNext,
+    });
+  }
+  /*
+  Implementiing handleClick allows our state to be stored in the board component
+  rather than the individual sqaures component. Now when the Board's state changes
+  the square compontnents will render again automatically
+  As it takes the state moving though the program it alternates between or 'X' and 'O'
+  */
+
   renderSqaure(i) {
-    return <Square value ={i} />;
+    return (
+      <Square
+        value ={this.state.squares[i]}
+        onClick={() => this.handleClick(i)}
+      />
+    );
   }
 
   render() {
-    const status = 'Next player: X';
+    const status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
 
     return (
       <div>
