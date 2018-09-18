@@ -26,7 +26,8 @@ Initializes our state for our react component
 }
 /*
 Square Component renders a single button used for selecting our squares
-It will return an error if a square has already been clicked
+It then takes the state from the squares render method and places the corresponding
+state in the designated box
 */
 
 class Board extends React.Component {
